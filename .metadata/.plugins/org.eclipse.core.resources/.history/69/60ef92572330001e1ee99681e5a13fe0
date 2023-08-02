@@ -1,0 +1,52 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<div class="row my-5">
+	<div class="col">
+		<h1 class="text-center">교수목록</h1>
+		<div id="div_profes"></div>
+	</div>
+</div>
+
+<script id="temp_proList" type="text/x-handlebars-template">
+	<table class="table">
+		<tr>
+			<td>교수번호</td>
+			<td>교수이름</td>
+			<td>소속학과</td>
+			<td>임용일</td>
+			<td>{{title}}</td>
+			<td>{{salary}}</td>
+		</tr>
+	{{#each .}}
+		<tr>
+			<td>{{pcode}}</td>
+			<td>{{pname}}</td>
+			<td>{{dept}}</td>
+			<td>{{hiredate}}</td>
+			<td>{{title}}</td>
+			<td>{{salary}}</td>
+		</tr>
+	{{/each}}
+	</table>
+</script>
+
+
+<script>
+
+	getList();
+
+	function getList(){
+		$.ajax({
+			type:"get",
+			url:"/pro/list.json",
+			data:{page:1},
+			dataType:"json",
+			success:function(data){
+				const temp=Handlebars.compile($("#temp_proList").html());
+				const html=temp(data);
+				$("#div_profes").html(html);
+			}
+		});
+	}
+
+</script>

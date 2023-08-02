@@ -1,0 +1,28 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<form name="frm1">
+	<div class="input-group mb-2">
+		<span class="input-group-text">교수번호</span>
+		<input name="pcode" class="form-control">
+	</div>
+	<div class="input-group mb-2">
+		<span class="input-group-text">교수이름</span>
+		<input name="pcode" class="form-control">
+	</div>
+	<div class="input-group mb-2">
+		<span class="input-group-text">교수학과</span>
+		<input name="pcode" class="form-control">
+		<select name="dept" class="form-select">
+			<option value="컴정">컴퓨터 정보공학</option>
+			<option value="정치외교">정치외교학</option>
+			<option value="건축디자인">건축디자인학</option>
+			<option value="금재">금속재료학</option>
+			<option value="실음">실용음악</option>
+		</select>
+	</div>
+	<div class="input-group mb-2">
+		<span class="input-group-text">교수직급</span>
+		<input name="title" value="정교수" type="radio">정교수
+	</div>
+
+</form>

@@ -1,0 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<form name="frm1">
+	<div class="input-group">
+		<span class="input-group-text">교수번호</span>
+		<input name="pcode" class="form-control">
+	</div>
+
+</form>

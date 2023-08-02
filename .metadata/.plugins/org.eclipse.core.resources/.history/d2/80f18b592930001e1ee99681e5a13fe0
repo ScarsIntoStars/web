@@ -1,0 +1,15 @@
+package model;
+
+import java.util.ArrayList;
+
+public class StuDAO {
+	public ArrayList<StuVO> list (int page, String query){
+		ArrayList<StuVO> array = new ArrayList<>();
+		try {
+			
+		} catch (Exception e) {
+			System.out.println("학생목록 오류 : " + .e.toString());
+		}
+		return array;
+	}
+}

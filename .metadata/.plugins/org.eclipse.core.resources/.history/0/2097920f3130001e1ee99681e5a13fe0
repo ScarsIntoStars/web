@@ -1,0 +1,21 @@
+package model;
+
+import java.util.ArrayList;
+
+public class DAOTest {
+
+	public static void main(String[] args) {		
+		ProDAO dao=new ProDAO();
+		
+		
+		System.out.println("검색 수 : " + dao.total(""));
+		
+		
+//		ArrayList<ProVO> array=dao.list(1, "이");
+//		for(ProVO vo:array) {
+//			System.out.println(vo.toString());
+//		}
+
+	}
+
+}

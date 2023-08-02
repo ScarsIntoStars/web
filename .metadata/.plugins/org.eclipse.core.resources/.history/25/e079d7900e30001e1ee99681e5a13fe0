@@ -1,0 +1,15 @@
+package model;
+
+import java.util.*;
+
+public class ProVO {
+
+	private String pcode;
+	private String pname;
+	private String dept;
+	private Date hiredate;
+	private String title;
+	private int salary;
+	
+	
+}

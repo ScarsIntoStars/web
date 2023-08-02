@@ -1,0 +1,53 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<div class="row my-5">
+	<div class="col">
+		<h1 class="text-center">강좌목록</h1>
+		<div id="div_cou"></div>
+	</div>
+</div>
+<!-- 강좌목록 템플릿 -->
+<script id="temp_cou" type="text/x-handlebars-template">
+		<table class="table">
+				<td>강의코드</td>
+				<td>강의이름</td>
+				<td>강의실</td>
+				<td>강의시간</td>
+				<td>최대수강인원</td>
+				<td>수강인원</td>
+				<td>교수이름</td>
+		{{#each .}}
+			<tr>
+				<td>{{lcode}}</td>
+				<td>{{lname}}</td>
+				<td>{{room}}</td>
+				<td>{{hours}}</td>
+				<td>{{capacity}}</td>
+				<td>{{persons}}</td>
+				<td>{{pname}}</td>
+			</tr>
+		{{/each}}
+	</table>
+</script>
+	
+
+<script>
+	getList(1);
+	function getList(page) {
+		$.ajax({
+			type:"get",
+			url:"/cou/list.json",
+			data:{"page":page, "key":"pname", "query":"이"},
+			dataType:"json",
+			success:function(data) {
+				console.log(data);
+				const temp=Handlebars.compile($("#temp_cou").html());
+				const html=temp(data);
+				$("#div_cou").html(html);
+			}
+			
+		});
+		
+	}
+
+</script>

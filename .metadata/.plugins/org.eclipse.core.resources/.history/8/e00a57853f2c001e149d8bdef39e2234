@@ -1,0 +1,17 @@
+package domain;
+
+import java.util.Date;
+
+public class BookVO {
+	private int seq;
+	private String title;
+	private String thumbnail;
+	private int price;
+	private String pdate;
+	private String authors;
+	private String url;
+	private String isbn;
+	private String contents;
+	private Date rdate;
+	private String publisher;
+}

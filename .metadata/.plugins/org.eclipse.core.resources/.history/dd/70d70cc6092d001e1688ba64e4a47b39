@@ -1,0 +1,108 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<div class="row my-5">
+	<div class="col">
+		<h1 class="text-center mb-5">상품목록</h1>
+		<div class="row">
+			<form class="col-6 col-md-4 col-lg-3" name="frm">
+				<div class="input-group" id="btn-group">
+					<input class="form-control" placeholde="검색어" name="query">
+					<button class="btn btn-primary">검색</button>
+					<span id="total" class="ms-3">20건</span>
+				</div>
+			</form>
+		</div>
+		<div id="div_product"></div>
+		<div class="text-center">
+		<button class="btn btn-primary" id="prev">이전</button>
+		<span id="nowPage">1/10</span>
+		<button class="btn btn-danger" id="next">다음</button>
+		</div>
+	</div>
+</div>
+
+
+
+
+<!--  상품목록 템플릿 -->
+<script id="temp_product" type="text/x-handlebars-template">
+	<table class="table">
+		{{#each items}}
+		<tr>
+			<td>{{code}}</td>
+			<td>{{name}}</td>
+			<td>{{price}}</td>
+			<td>{{fdate}}</td>
+		</tr>
+		{{/each}}
+	</table>
+
+</script>
+
+<script>
+
+
+
+	$("#prev").on("click", function(){
+		page--;
+		getList()
+	});
+	
+	$("#next").on("click", function(){
+		page++;
+		getList()
+	});
+	
+	
+	let page=1;
+	let query = "";
+	
+	getList();
+	
+	$(frm).on("submit", function(e) {
+		e.preventDefault();
+		page=1;
+		query=$(frm.query).val();
+		getList();
+	});
+	
+	
+	if(data.total==0) $("#btn-group").hide();
+	else $("#btn-group").show();
+	
+	
+	function getList(){
+		$.ajax({
+			type:"get",
+			url:"/pro/list.json",
+			data:{"page":page, "query" : query},
+			dataType:"json",
+			success:function(data){
+				console.log(data);
+				const temp=Handlebars.compile($("#temp_product").html());
+				const html=temp(data);
+				$("#div_product").html(html);
+				
+				let lastPage = Math.ceil(data.total/5);
+				
+				
+				if(page==1){
+					$("#prev").attr("disabled", true) 
+				} else {
+					$("#prev").attr("disabled", false)
+				}
+				
+				if(page==lastPage) {
+					$("#next").attr("disabled", true)
+				} else {
+					$("#next").attr("disabled", false)
+				}
+				
+				$("#nowPage").html(page + "/" + lastPage);
+				
+				$("#total").html(data.total +"건");
+			}
+		});
+		
+	}
+</script>

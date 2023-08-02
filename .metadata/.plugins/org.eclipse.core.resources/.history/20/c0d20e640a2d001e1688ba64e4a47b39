@@ -1,0 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<div class="row my-5">
+	<div class="col">
+		<h1 class="text-center">상품등록</h1>
+		<form>
+			<input class="form-control my-2" placeholder="상품이름">
+			<input class="form-control my-2" placeholder="상품가격">
+		</form>
+	</div>
+</div>

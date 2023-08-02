@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<form name="frm1">
+	<div class="input-group mb-2">
+		<span class="input-group-text">교수번호</span> <input name="pcode"
+			class="form-control">
+	</div>
+	<div class="input-group mb-2">
+		<span class="input-group-text">교수이름</span> <input name="pcode"
+			class="form-control">
+	</div>
+	<div class="input-group mb-2">
+		<span class="input-group-text">교수학과</span> <input name="pcode"
+			class="form-control"> <select name="dept" class="form-select">
+			<option value="컴정">컴퓨터 정보공학</option>
+			<option value="정치외교">정치외교학</option>
+			<option value="건축디자인">건축디자인학</option>
+			<option value="금재">금속재료학</option>
+			<option value="실음">실용음악</option>
+		</select>
+	</div>
+	<div class="input-group mb-2 pt-2">
+		<span class="input-group-text">교수직급</span>&nbsp;&nbsp;
+		<input type="radio" name="title" value="정교수">&nbsp;&nbsp;
+		<span class= "pt-2">정교수</span>&nbsp;&nbsp;
+		<input type="radio" name="title" value="부교수">&nbsp;&nbsp;
+		<span class= "pt-2">부교수</span>&nbsp;&nbsp;
+		<input type="radio" name="title" value="조교수">&nbsp;&nbsp;
+		<span class= "pt-2">조교수</span>&nbsp;&nbsp;
+	</div>
+	<div class="input-group mb-2">
+		<span class="input-group-text">교수급여</span>
+		<input name="salary" calss="from-control">
+	</div>
+	<div class="input-group mb-2">
+		<span class="input-group-text">생년월일</span>
+		<input name="hiredate" calss="from-control" type="date">
+	</div>
+	<div class="text-center">
+		<input type="submit" value="교수등록" class="btn btn-primary">
+		<input type="reset" value="등록취소" class="btn btn-secondary">
+	</div>
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

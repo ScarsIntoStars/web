@@ -1,0 +1,31 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<div class="row my-5">
+	<div class="col">
+		<h1 class="text-center">학생목록</h1>
+	</div>
+</div>
+
+<script id="temp_proList" type="text/x-handlebars-template">
+	<table class="table">
+		<tr>
+			<td>학생번호</td>
+			<td>학생이름</td>
+			<td>소속학과</td>
+			<td>학년</td>
+			<td>생년월일</td>
+			<td>지도교수 번호</td>
+		</tr>
+	{{#each .}}
+		<tr>
+			<td>{{scode}}</td>
+			<td>{{sname}}</td>
+			<td>{{dept}}</td>
+			<td>{{year}}</td>
+			<td>{{birth}}</td>
+			<td>{{advisor}}</td>
+		</tr>
+	{{/each}}
+	</table>
+</script>

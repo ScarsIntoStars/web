@@ -1,0 +1,15 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+<div class="row justify-content-center">
+	<div class="col-md-8">
+		<h1 class="text-center">상품등록</h1>
+		<form name="frm1" class="card p-3">
+			<div class="input-group">
+				<span class="input-group-text">상품이름</span>
+				<input class="form-control">
+			</div>
+		</form>
+	</div>
+</div>

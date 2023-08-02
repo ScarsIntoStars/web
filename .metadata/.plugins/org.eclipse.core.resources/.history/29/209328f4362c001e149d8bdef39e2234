@@ -1,0 +1,17 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+@WebServlet("/book/search")
+public class BookController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+ 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	request.setAttribute("pageName", "/book/search.jsp");
+	RequestDispatcher dis=request.getRequestDispatcher("/home.jsp");
+	dis.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	}
+
+}
