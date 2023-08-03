@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <form name="frm1">
 	<div class="input-group mb-2">
 		<span class="input-group-text">교수이름</span>

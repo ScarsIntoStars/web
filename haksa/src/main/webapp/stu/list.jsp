@@ -16,17 +16,36 @@
 					<input type="submit" value="검색" class="btn btn-primary">
 				</div>
 			</form>
+			<div class="col text-end">
+				<button class="btn btn-primary" id="btn-insert">학생등록</button>
+			</div>
 		</div>
 		<hr>
 		<div id="div_stu"></div>
 		<div id="pagination" class="pagination justify-content-center mt-5"></div>
 	</div>
 </div>
+
+<!-- 학생등록모달 -->
+<div class="modal fade" id="modal-insert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">학생등록</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <jsp:include page="insert.jsp"/>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 학생목록 템플릿-->
 <script id="temp_stu" type="text/x-handlebars-template">
 	<table class="table">
 		{{#each .}}
-		<tr>
+		<tr class="stu" style="cursor:pointer;" >
 			<td>{{scode}}</td>
 			<td>{{sname}}</td>
 			<td>{{dept}}</td>
@@ -40,6 +59,17 @@
 <script>
 	let query="";
 	let key=$(frm.key).val();
+	
+	$("#div_stu").on("click", ".stu", function(){
+		const scode=$(this).attr("scode")
+		location.href="/stu/update?scode=" +scode;
+	});
+	
+	$("#btn-insert").on("click", function(){
+		$("#modal-insert").modal("show");
+	});
+	
+	
 	
 	getTotal();
 	$(frm).on("submit", function(e){
@@ -57,10 +87,11 @@
 			success:function(data){
 				console.log(data);
 				const totalPages=Math.ceil(data/5);
-				if(totalPages==0){
-					alert("검색 내용이 없습니다!");
-					
-					$(frm.query).val("");
+					if(totalPages==0){
+						alert("검색 내용이 없습니다!");
+						$(frm.query).val();
+						query="";
+						getTotal();
 				}else{
 					$("#pagination").show();
 					$("#pagination").twbsPagination("changeTotalPages", totalPages, 1);

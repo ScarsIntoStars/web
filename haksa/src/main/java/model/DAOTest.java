@@ -5,10 +5,11 @@ import java.sql.*;
 public class DAOTest {
 
 	public static void main(String[] args) {		
-		ProDAO dao=new ProDAO();
-		System.out.println(dao.read("221").toString());
+//		ProDAO dao=new ProDAO();
+//		System.out.println(dao.read("221").toString());
 		
-		
+		StuDAO dao=new StuDAO();
+		System.out.println(dao.read("92414033"));
 		
 		
 //		ProDAO dao=new ProDAO();

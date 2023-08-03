@@ -7,7 +7,7 @@ public class StuVO extends ProVO {
 	private String sname;
 	private String dept;
 	private int year;
-	private Date birthday;
+	private String birthday;
 	private String advisor;
 
 	public String getScode() {
@@ -42,11 +42,11 @@ public class StuVO extends ProVO {
 		this.year = year;
 	}
 
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 

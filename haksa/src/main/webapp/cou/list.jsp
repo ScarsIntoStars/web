@@ -81,26 +81,26 @@
 		
 	}
 	getTotal();
-	function getTotal(){
-		$.ajax({
-			type:"get",
-			url:"/cou/total",
-			data:{"query":query, "key":key},
-			success:function(data) {
-				//alert(data);
-				const totalPages=Math.ceil(data/5);
-				if(totalPages==0) {
-					alert("검색한 강좌가 없습니다!")
-					$("#pagination").hide();
-					$("#div_cou").hide();
-				} else {
-					$("#pagination").show();
-					$("#pagination").twbsPagination("changeTotalPages", totalPages, 1);
-					$("#div_cou").show();
-				}
-			}
-			
-		})
+
+	function getTotal() {
+	  $.ajax({
+	    type: "get",
+	    url: "/cou/total",
+	    data: { "query": query, "key": key },
+	    success: function(data) {
+	      const totalPages = Math.ceil(data / 5);
+	      if (totalPages == 0) {
+	        alert("검색 내용이 없습니다!");
+	        $(frm.query).val("");
+	        query = "";
+	        getTotal();
+	      } else {
+	        $("#pagination").show();
+	        $("#pagination").twbsPagination("changeTotalPages", totalPages, 1);
+	        $("#div_cou").show();
+	      }
+	    }
+	  });
 	}
 	
 	//페이지네이션 출력

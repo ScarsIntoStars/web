@@ -6,8 +6,9 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="pcode"/>
+		<item key="selection" value=""/>
 		<list key="findhistory">
+			<item value="from"/>
 			<item value="pcode"/>
 			<item value="include"/>
 			<item value="gson"/>
@@ -22,7 +23,6 @@
 			<item value="temp_local"/>
 			<item value="console"/>
 			<item value="저장할"/>
-			<item value="버거킹"/>
 		</list>
 		<list key="replacehistory">
 		</list>
