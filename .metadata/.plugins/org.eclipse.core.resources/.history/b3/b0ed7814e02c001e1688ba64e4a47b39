@@ -1,8 +1,0 @@
-package model;
-
-public class ProductVO {
-	private int code;
-	private String name;
-	private int price;
-	private Date rdate;
-}
