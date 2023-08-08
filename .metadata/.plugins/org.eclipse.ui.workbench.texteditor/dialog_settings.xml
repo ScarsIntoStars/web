@@ -6,8 +6,13 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value=""/>
+		<item key="selection" value="{{{"/>
 		<list key="findhistory">
+			<item value="{{{"/>
+			<item value="["/>
+			<item value="card"/>
+			<item value="*.svg"/>
+			<item value="att"/>
 			<item value="from"/>
 			<item value="pcode"/>
 			<item value="include"/>
@@ -18,11 +23,6 @@
 			<item value="pe"/>
 			<item value="last"/>
 			<item value="void"/>
-			<item value="items"/>
-			<item value="table"/>
-			<item value="temp_local"/>
-			<item value="console"/>
-			<item value="저장할"/>
 		</list>
 		<list key="replacehistory">
 		</list>

@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import model.GoodsDAO;
 import model.GoodsVO;
@@ -23,7 +25,7 @@ import model.NaverAPI;
 
 
 @WebServlet(value={"/goods/search","/goods/search.json","/goods/append","/goods/list.json",
-		"/goods/total", "/goods/list", "/goods/delete"})
+		"/goods/total", "/goods/list", "/goods/delete", "/goods/insert", "/goods/update", "/goods/read"})
 public class GoodsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     GoodsDAO gdao=new GoodsDAO(); 
@@ -58,7 +60,20 @@ public class GoodsController extends HttpServlet {
 			request.setAttribute("pageName", "/goods/list.jsp");
 			dis.forward(request, response);
 			break;
-
+		case "/goods/insert":
+		request.setAttribute("pageName", "/goods/insert.jsp");
+		dis.forward(request, response);
+		break;
+		case "/goods/update":
+			request.setAttribute("vo", gdao.read(request.getParameter("gid")));
+			request.setAttribute("pageName", "/goods/update.jsp");
+			dis.forward(request, response);
+			break;
+		case "/goods/read":
+			request.setAttribute("vo", gdao.read(request.getParameter("gid")));
+			request.setAttribute("pageName", "/goods/read.jsp");
+			dis.forward(request, response);
+			break;
 		}
 	}
 
@@ -68,13 +83,13 @@ public class GoodsController extends HttpServlet {
 		switch(request.getServletPath()) {
 		case "/goods/append":
 			try {
-				//이미지저장
+				//이미지저장 (잘 저장해놓고 또 쓰기)
 				UUID uuid=UUID.randomUUID();
 				String gid=uuid.toString().substring(0,8);
 				URL url=new URL(request.getParameter("image"));
-				InputStream is=url.openStream();
+				InputStream is=url.openStream(); // 입력
 				String fileName = gid + ".jpg";
-				FileOutputStream fos=new FileOutputStream("c:/" + path + fileName);
+				FileOutputStream fos=new FileOutputStream("c:/" + path + fileName); // 출력
 				int data=0;
 				while((data=is.read()) != -1) {
 					fos.write(data);
@@ -102,6 +117,35 @@ public class GoodsController extends HttpServlet {
 			} catch (Exception e) {
 				System.out.println("상품삭제 오류");
 			}
+			break;
+			
+		case "/goods/insert":
+			MultipartRequest multi=new MultipartRequest(request, "c:"+path, 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
+			String image=multi.getFilesystemName("image"); //
+			GoodsVO vo=new GoodsVO();
+			UUID uuid=UUID.randomUUID();
+			String gid=uuid.toString().substring(0,8); // 8 앞까지만 가져옴 ( 0 1 2 3 4 5 6 7 )
+			vo.setGid(gid);
+			vo.setImage(path+image);
+			vo.setTitle(multi.getParameter("title"));
+			vo.setMaker(multi.getParameter("maker"));
+			vo.setPrice(Integer.parseInt(multi.getParameter("price")));
+			System.out.println(vo.toString());
+			gdao.insert(vo);
+			response.sendRedirect("/goods/list");
+			break;
+		case "/goods/update":
+			multi=new MultipartRequest(request, "c:"+path, 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
+			image=multi.getFilesystemName("image")==null? //
+			multi.getParameter("oldImage") : path+multi.getFilesystemName("image");
+			vo=new GoodsVO();
+			vo.setGid(multi.getParameter("gid"));
+			vo.setImage(image);
+			vo.setTitle(multi.getParameter("title"));
+			vo.setMaker(multi.getParameter("maker"));
+			vo.setPrice(Integer.parseInt(multi.getParameter("price")));
+			gdao.update(vo);
+			response.sendRedirect("/goods/list");
 			break;
 		}
 	}

@@ -2,35 +2,38 @@
 <div class="row my-5">
 	<div class="col">
 		<h1 class="text-center mb-5">상품목록</h1>
-			<form name="frm" class="col">
+		<div class="row justify-content-end">
+			<div class="col">
+				<a href="/goods/insert">
+				<button class="btn btn-primary">상품등록</button>
+				</a>
+			</div>
+			<form name="frm" class="col-4">
 				<div class="input-group">
 					<input name="query" class="form-control" value="">
-					<button class="btn btn-primary">검색</button>	
-				</div>
+					<button class="btn btn-primary">검색</button>
+				</div>	 
 			</form>
-		<div id="div_goods" class="row"></div>
-		<div class="row">
 		</div>
-		<div id="div_search"></div>
+		<hr>
+		<div id="div_goods"></div>
 		<div id="pagination" class="pagination justify-content-center mt-3"></div>
 	</div>
 </div>
-
-
 <!-- 상품목록 템플릿 -->
 <script id="temp_goods" type="x-handlebars/template">
-<table class="table">
+	<table class="table">
 	{{#each .}}
 		<tr>
-			<td class="gid">{{gid}}</td>
+			<td class="gid"><a href="/goods/update?gid={{gid}}">{{gid}}</a></td>
 			<td><img class="image" src="{{image}}" width="50px"></td>
 			<td><div class="ellipsis">{{title}}</div></td>
 			<td>{{fmtPrice price}}</td>
 			<td>{{maker}}</td>
-			<td><button class="btn btn-danger" gid="{{gid}}" image="{{image}}">삭제</button></td>
+			<td><button class="btn btn-danger btn-sm" gid="{{gid}}" image="{{image}}">삭제</button><td>
 		</tr>
 	{{/each}}
-</table>
+	</table>
 </script>
 <script>
 	Handlebars.registerHelper("fmtPrice", function(price){
@@ -38,55 +41,52 @@
 	});
 </script>
 <script>
-// 삭제버튼을 누른 경우
-$("#div_goods").on("click", ".btn-danger", function(){
-	const image=$(this).attr("image");
-	const gid=$(this).attr("gid");
-	alert(image + "," + gid);
-	if(confirm("해당파일을 삭제하실래요?")){
-		$.ajax({
-			type:"post",
-			url:"/goods/delete",
-			data:{gid:gid, image:image},
-			success:function(){
-				alert("상품이 삭제되었습니다.");
-				getTotal();
-			}
-		});
-	}
-});
-
-
-</script>
-
-
-<script>
 	let page=1;
 	let query="";
 	
-//  토탈을 구하는 함수
-	function getTotal(){
-	$.ajax({
-		type:"get",
-		url:"/goods/total",
-		date:{query:query},
-		success:function(data){
-			const totalPages=Math.ceil(data/6);
-			if(totalPages==0) {
-				alert("검색 내용이 없습니다.");
-				query="";
-				getTotal();
-			} else {
-				$("#pagination").twbsPagination("changeTotalPages", totalPages, 1);
-			}
-		}
-		
+	$(frm).on("submit", function(e){
+		e.preventDefault();
+		query=$(frm.query).val();
+		getTotal();
 	});
-}
 	
+	//삭제버튼을 클릭한경우
+	$("#div_goods").on("click", ".btn-danger", function(){
+			const image=$(this).attr("image");
+			const gid=$(this).attr("gid");
+			if(confirm("해당 상품을 삭제하실래요?")){
+				$.ajax({
+					type:"post",
+					url:"/goods/delete",
+					data:{gid:gid, image:image},
+					success:function(){
+						alert("상품이 삭제되었습니다.");
+						getTotal();
+					}
+				});
+			}
+	});
 	
+	getTotal();
+	function getTotal(){
+		$.ajax({
+			type:"get",
+			url:"/goods/total",
+			data:{query:query},
+			success:function(data){
+				const totalPages=Math.ceil(data/6);
+				if(totalPages==0){
+					alert("검색내용이 존재하지않습니다.");
+					$(frm.query).val("");
+					query="";
+					getTotal();
+				}else{
+					$("#pagination").twbsPagination("changeTotalPages", totalPages, 1);
+				}
+			}
+		});
+	}
 	
-	getList();
 	function getList(){
 		$.ajax({
 			type:"get",
@@ -101,21 +101,6 @@ $("#div_goods").on("click", ".btn-danger", function(){
 		});
 	}
 	
-
-	
-	$(frm).on("submit", function(e){
-		e.preventDefault();
-		query=$(frm.query).val();
-		
-		if(query=="") {
-		alert("검색어를 입력하세요")	;
-		$(frm.query).focus();
-		} else {
-			page=1;
-			getList();
-		}
-	});
-
 	$('#pagination').twbsPagination({
 	    totalPages:10,	// 총 페이지 번호 수
 	    visiblePages: 5,	// 하단에서 한번에 보여지는 페이지 번호 수
@@ -130,6 +115,4 @@ $("#div_goods").on("click", ".btn-danger", function(){
 	    	getList();
 	    }
 	});
-	
-	
 </script>
