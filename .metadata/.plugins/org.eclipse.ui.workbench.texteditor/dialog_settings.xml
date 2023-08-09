@@ -6,23 +6,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="{{{"/>
+		<item key="selection" value="act"/>
 		<list key="findhistory">
+			<item value="act"/>
+			<item value="ac"/>
+			<item value="ac\"/>
+			<item value="end"/>
+			<item value="qnt"/>
+			<item value="img"/>
+			<item value="image"/>
+			<item value="c:"/>
+			<item value="ㅊ:"/>
 			<item value="{{{"/>
 			<item value="["/>
 			<item value="card"/>
 			<item value="*.svg"/>
 			<item value="att"/>
 			<item value="from"/>
-			<item value="pcode"/>
-			<item value="include"/>
-			<item value="gson"/>
-			<item value="temp"/>
-			<item value="page"/>
-			<item value="fdate"/>
-			<item value="pe"/>
-			<item value="last"/>
-			<item value="void"/>
 		</list>
 		<list key="replacehistory">
 		</list>

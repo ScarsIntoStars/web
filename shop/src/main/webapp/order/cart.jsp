@@ -4,6 +4,9 @@
 	<div class="col mb-5">
 		<h1 class="text-center mb-5">장바구니</h1>
 		<div id="div_cart"></div>
+		<div class="text-center my-5">
+			<button class="btn btn-primary px-5" id="btn-order">주문하기</button>
+		</div>
 	</div>
 </div>
 
@@ -11,17 +14,18 @@
 <script id="temp_cart" type="text/x-handlebars-template">
 	<table class="table">
 			<tr>
-				<td>상품코드</td>
-				<td>썸네일</td>
-				<td>상품명</td>
-				<td>상품가격</td>
-				<td>갯수</td>
-				<td>가격<td>
-				<td>삭제</td>
+				<th><input type="checkbox" id="all"></th>
+				<th>상품코드</th>
+				<th>이미지</th>
+				<th>상품이름</th>
+				<th>상품가격</th>
+				<th>상품수량</th>
+				<th>상품금액</th>
+				<th>삭제</th>
 			</tr>
-
 		{{#each .}}
 			<tr class="tr" price={{price}}>
+				<td><input type="checkbox" class="chk"></td>
 				<td class="gid">{{gid}}</td>
 				<td><img src="{{image}}" width="50px"</td>
 				<td>{{title}}</td>
@@ -32,7 +36,7 @@
 			</tr>
 		{{/each}}
 		<tr>
-			<td colspan="7" class="text-end pe-5"><h5>총합계 : <span id="sum">0원</span></h5></td>
+			<td colspan="8" class="text-end pe-5"><h5>총합계 : <span id="sum">0원</span></h5></td>
 		</tr>
 	</table>
 </script>
@@ -44,6 +48,33 @@
 </script>
 <script>
 	getList();
+	
+	// 전체선택 체크박스를 클릭한 경우
+	$("#div_cart").on("click", "#all", function(){
+		if($(this).is(":checked")) {
+			$("#div_cart .chk").each(function(){
+			$(this).prop("checked", true);
+			});
+		} else { 
+			$("#div_cart .chk").each(function(){
+			$(this).prop("checked", false);
+			});
+		}
+		
+	});
+	
+	// 각 행의 체크박스를 클릭한 경우
+	$("#div_cart").on("click", ".chk", function(){
+		const all=$("#div_cart .chk").length; // 랭스는 속성값이라 소괄호 없어도 됨
+		const chk=$("#div_cart .chk:checked").length;
+		
+		if(all==chk) {
+			$("#div_cart #all").prop("checked", true);
+		} else {
+			$("#div_cart #all").prop("checked", false);
+		}
+	})
+	
 	
 	$("#div_cart").on("click", ".btn-primary", function(){
 		const row=$(this).parent().parent();
