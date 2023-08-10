@@ -81,7 +81,7 @@
 			data:{page:page, query:query},
 			dataType:"json",
 			success:function(data){
-				console.log(data);
+				//console.log(data);
 				const temp=Handlebars.compile($("#temp_goods").html());
 				$("#div_goods").html(temp(data));
 			}

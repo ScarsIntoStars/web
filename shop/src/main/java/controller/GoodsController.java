@@ -130,7 +130,7 @@ public class GoodsController extends HttpServlet {
 			vo.setTitle(multi.getParameter("title"));
 			vo.setMaker(multi.getParameter("maker"));
 			vo.setPrice(Integer.parseInt(multi.getParameter("price")));
-			System.out.println(vo.toString());
+//			System.out.println(vo.toString());
 			gdao.insert(vo);
 			response.sendRedirect("/goods/list");
 			break;
