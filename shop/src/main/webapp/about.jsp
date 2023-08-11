@@ -23,7 +23,7 @@
 <!-- 상품목록 템플릿 -->
 <script id="temp_goods" type="x-handlebars/template">
 	{{#each .}}
-		<div class="col-6 col-md-3 col-lg-2 mb-3">
+		<div class="col-6 col-md-4 col-lg-2 mb-3">
 			<div class="card p-3">
 				<img src="{{image}}" gid="{{gid}}" style="cursor:pointer;">
 				<div class="ellipsis title mt-2">{{title}}</div>
@@ -41,12 +41,10 @@
 	let page=1;
 	let query="";
 	
-	
 	$("#div_goods").on("click", "img", function(){
 		const gid=$(this).attr("gid");
-		location.href="/goods/read?gid=" + gid;
-	})
-	
+		location.href="/goods/read?gid=" + gid;	
+	});
 	
 	$(frm).on("submit", function(e){
 		e.preventDefault();
@@ -81,7 +79,7 @@
 			data:{page:page, query:query},
 			dataType:"json",
 			success:function(data){
-				//console.log(data);
+				console.log(data);
 				const temp=Handlebars.compile($("#temp_goods").html());
 				$("#div_goods").html(temp(data));
 			}

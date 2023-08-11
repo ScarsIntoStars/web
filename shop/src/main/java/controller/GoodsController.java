@@ -25,7 +25,8 @@ import model.NaverAPI;
 
 
 @WebServlet(value={"/goods/search","/goods/search.json","/goods/append","/goods/list.json",
-		"/goods/total", "/goods/list", "/goods/delete", "/goods/insert", "/goods/update", "/goods/read"})
+		"/goods/total", "/goods/list", "/goods/delete", "/goods/insert", "/goods/update",
+		"/goods/read"})
 public class GoodsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     GoodsDAO gdao=new GoodsDAO(); 
@@ -61,9 +62,9 @@ public class GoodsController extends HttpServlet {
 			dis.forward(request, response);
 			break;
 		case "/goods/insert":
-		request.setAttribute("pageName", "/goods/insert.jsp");
-		dis.forward(request, response);
-		break;
+			request.setAttribute("pageName", "/goods/insert.jsp");
+			dis.forward(request, response);
+			break;
 		case "/goods/update":
 			request.setAttribute("vo", gdao.read(request.getParameter("gid")));
 			request.setAttribute("pageName", "/goods/update.jsp");
@@ -77,19 +78,21 @@ public class GoodsController extends HttpServlet {
 		}
 	}
 
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String path="/upload/goods/";
+		File mdPath=new File("c:" + path);
+		if(!mdPath.exists()) mdPath.mkdir();
+		
 		switch(request.getServletPath()) {
 		case "/goods/append":
 			try {
-				//이미지저장 (잘 저장해놓고 또 쓰기)
+				//이미지저장
 				UUID uuid=UUID.randomUUID();
 				String gid=uuid.toString().substring(0,8);
 				URL url=new URL(request.getParameter("image"));
-				InputStream is=url.openStream(); // 입력
+				InputStream is=url.openStream();
 				String fileName = gid + ".jpg";
-				FileOutputStream fos=new FileOutputStream("c:/" + path + fileName); // 출력
+				FileOutputStream fos=new FileOutputStream("c:/" + path + fileName);
 				int data=0;
 				while((data=is.read()) != -1) {
 					fos.write(data);
@@ -112,32 +115,34 @@ public class GoodsController extends HttpServlet {
 				String gid=request.getParameter("gid");
 				String image=request.getParameter("image");
 				File file=new File("c:/" + image);
-				file.delete(); // 이미지파일 삭제
-				gdao.delete(gid); // 테이블에서 데이터삭제
-			} catch (Exception e) {
-				System.out.println("상품삭제 오류");
+				file.delete(); //이미지파일삭제
+				gdao.delete(gid); //데이터삭제
+			}catch(Exception e) {
+				System.out.println("상품삭제:" + e.toString());
 			}
 			break;
-			
 		case "/goods/insert":
-			MultipartRequest multi=new MultipartRequest(request, "c:"+path, 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
-			String image=multi.getFilesystemName("image"); //
+			MultipartRequest multi=new MultipartRequest(
+					request, "c:"+path, 1024*1024*10,"UTF-8", new DefaultFileRenamePolicy());
+			String image=path + multi.getFilesystemName("image");
+			
 			GoodsVO vo=new GoodsVO();
 			UUID uuid=UUID.randomUUID();
-			String gid=uuid.toString().substring(0,8); // 8 앞까지만 가져옴 ( 0 1 2 3 4 5 6 7 )
+			String gid=uuid.toString().substring(0,8);
 			vo.setGid(gid);
-			vo.setImage(path+image);
+			vo.setImage(image);
 			vo.setTitle(multi.getParameter("title"));
 			vo.setMaker(multi.getParameter("maker"));
 			vo.setPrice(Integer.parseInt(multi.getParameter("price")));
-//			System.out.println(vo.toString());
+			System.out.println(vo.toString());
 			gdao.insert(vo);
 			response.sendRedirect("/goods/list");
 			break;
 		case "/goods/update":
-			multi=new MultipartRequest(request, "c:"+path, 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
-			image=multi.getFilesystemName("image")==null? //
-			multi.getParameter("oldImage") : path+multi.getFilesystemName("image");
+			multi=new MultipartRequest(
+					request, "c:"+path, 1024*1024*10,"UTF-8", new DefaultFileRenamePolicy());
+			image=multi.getFilesystemName("image")==null?
+					multi.getParameter("oldImage") : path + multi.getFilesystemName("image");
 			vo=new GoodsVO();
 			vo.setGid(multi.getParameter("gid"));
 			vo.setImage(image);
@@ -151,3 +156,9 @@ public class GoodsController extends HttpServlet {
 	}
 
 }
+
+
+
+
+
+

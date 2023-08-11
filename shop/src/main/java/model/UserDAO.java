@@ -82,6 +82,7 @@ public class UserDAO {
 				vo.setAddress2(rs.getString("address2"));
 				vo.setRegDate(rs.getTimestamp("regDate"));
 				vo.setPhoto(rs.getString("photo"));
+				vo.setRole(rs.getInt("role"));
 			}
 		}catch(Exception e) {
 			System.out.println("회원정보읽기:" + e.toString());

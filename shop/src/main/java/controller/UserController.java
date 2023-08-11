@@ -20,16 +20,19 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import model.UserDAO;
 import model.UserVO;
 
-@WebServlet(value={"/user/login", "/user/logout", "/user/read", "/user/insert", "/user/update", "/user/list.json", "/user/list"})
+
+@WebServlet(value= {"/user/login", "/user/logout", "/user/read", "/user/insert", "/user/update",
+					"/user/list.json", "/user/list"})
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	UserDAO dao=new UserDAO();
+    UserDAO dao=new UserDAO();
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter();
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out=response.getWriter();
 		HttpSession session=request.getSession();
 		RequestDispatcher dis=request.getRequestDispatcher("/home.jsp");
-		switch(request.getServletPath()) {
+		switch(request.getServletPath()){
 		case "/user/login":
 			String target=request.getParameter("target")==null?
 					"":request.getParameter("target");
@@ -37,33 +40,28 @@ public class UserController extends HttpServlet {
 			request.setAttribute("pageName", "/user/login.jsp");
 			dis.forward(request, response);
 			break;
-		
 		case "/user/logout":
 			session.removeAttribute("user");
 			response.sendRedirect("/");
 			break;
-			
 		case "/user/read":
 			UserVO vo=(UserVO)session.getAttribute("user");
 			request.setAttribute("vo", dao.read(vo.getUid()));
 			request.setAttribute("pageName", "/user/read.jsp");
 			dis.forward(request, response);
 			break;
-			
 		case "/user/insert":
-			request.setAttribute("pageName", "/user/insert.jsp");
+			request.setAttribute("pageName","/user/insert.jsp");
 			dis.forward(request, response);
 			break;
-			
-		case "/user/list.json":
+		case "/user/list.json": //실행 /user/list.json?page=1&key=uid&query=
 			String key=request.getParameter("key");
 			String query=request.getParameter("query");
 			int page=Integer.parseInt(request.getParameter("page"));
 			ArrayList<UserVO> array=dao.list(key, query, page);
-			Gson gson = new Gson();
+			Gson gson=new Gson();
 			out.print(gson.toJson(array));
 			break;
-			
 		case "/user/list":
 			request.setAttribute("pageName", "/user/list.jsp");
 			dis.forward(request, response);
@@ -73,10 +71,12 @@ public class UserController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		PrintWriter out = response.getWriter();
+		PrintWriter out=response.getWriter();
 		HttpSession session=request.getSession();
+		
+		//폴더생성
 		String path="/upload/photo/";
-		File mdPath = new File("c:" + path);
+		File mdPath=new File("c:" + path);
 		if(!mdPath.exists()) mdPath.mkdir();
 		
 		switch(request.getServletPath()) {
@@ -84,6 +84,7 @@ public class UserController extends HttpServlet {
 			String uid=request.getParameter("uid");
 			String upass=request.getParameter("upass");
 			UserVO user=dao.read(uid);
+			
 			int result=0; //아이디가 없는경우
 			if(user.getUid()!=null) {
 				if(user.getUpass().equals(upass)) {
@@ -93,17 +94,16 @@ public class UserController extends HttpServlet {
 					result=2; //비밀번호 불일치
 				}
 			}
-			out.print(result);
+			out.println(result);
 			break;
-			
-		case "/user/insert":
+		case  "/user/insert":
 			//사진저장
 			MultipartRequest multi=new MultipartRequest(
-					request, "c:"+path, 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
+					request, "c:"+path, 1024*1024*10,"UTF-8", new DefaultFileRenamePolicy());
 			String photo = multi.getFilesystemName("photo")==null ? "":
 					path + multi.getFilesystemName("photo");
 			
-			//데이터 저장
+			//데이터저장
 			UserVO vo=new UserVO();
 			vo.setUid(multi.getParameter("uid"));
 			vo.setUpass(multi.getParameter("upass"));
@@ -112,15 +112,14 @@ public class UserController extends HttpServlet {
 			vo.setAddress1(multi.getParameter("address1"));
 			vo.setAddress2(multi.getParameter("address2"));
 			vo.setPhoto(photo);
-			System.out.println(".............." + vo.toString());
+			System.out.println("........." + vo.toString());
 			dao.insert(vo);
 			response.sendRedirect("/user/login");
 			break;
-			
 		case "/user/update":
 			//사진저장
 			multi=new MultipartRequest(
-					request, "c:"+path, 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
+					request, "c:"+path, 1024*1024*10,"UTF-8", new DefaultFileRenamePolicy());
 			photo = multi.getFilesystemName("photo")==null ? multi.getParameter("oldPhoto"):
 					path + multi.getFilesystemName("photo");
 			vo=new UserVO();
@@ -134,6 +133,12 @@ public class UserController extends HttpServlet {
 			response.sendRedirect("/user/read");
 			break;
 		}
+		
 	}
-
 }
+
+
+
+
+
+

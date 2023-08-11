@@ -5,7 +5,7 @@
 		<div class="row justify-content-end">
 			<div class="col">
 				<a href="/goods/insert">
-				<button class="btn btn-primary">상품등록</button>
+					<button class="btn btn-primary">상품등록</button>
 				</a>
 			</div>
 			<form name="frm" class="col-4">
@@ -27,7 +27,7 @@
 		<tr>
 			<td class="gid"><a href="/goods/update?gid={{gid}}">{{gid}}</a></td>
 			<td><img class="image" src="{{image}}" width="50px"></td>
-			<td><div class="ellipsis">{{title}}</div></td>
+			<td>{{title}}</td>
 			<td>{{fmtPrice price}}</td>
 			<td>{{maker}}</td>
 			<td><button class="btn btn-danger btn-sm" gid="{{gid}}" image="{{image}}">삭제</button><td>
@@ -74,14 +74,16 @@
 			url:"/goods/total",
 			data:{query:query},
 			success:function(data){
-				const totalPages=Math.ceil(data/6);
-				if(totalPages==0){
-					alert("검색내용이 존재하지않습니다.");
-					$(frm.query).val("");
-					query="";
-					getTotal();
+				if(data==0){
+					$("#div_goods").html("<h3 class='text-center my-5'>상품이 존재하지 않습니다.</h3>");
 				}else{
+					const totalPages=Math.ceil(data/6);
 					$("#pagination").twbsPagination("changeTotalPages", totalPages, 1);
+				}
+				if(data > 6){
+					$("#pagination").show();
+				}else{
+					$("#pagination").hide();
 				}
 			}
 		});
@@ -94,7 +96,6 @@
 			data:{page:page, query:query},
 			dataType:"json",
 			success:function(data){
-				console.log(data);
 				const temp=Handlebars.compile($("#temp_goods").html());
 				$("#div_goods").html(temp(data));
 			}
@@ -116,3 +117,5 @@
 	    }
 	});
 </script>
+
+

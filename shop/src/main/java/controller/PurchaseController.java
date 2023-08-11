@@ -17,7 +17,8 @@ import model.OrderVO;
 import model.PurchaseDAO;
 import model.PurchaseVO;
 
-@WebServlet(value={"/purchase/insert", "/order/insert","/purchase/list.json", "/purchase/list"})
+@WebServlet(value={"/purchase/insert", "/order/insert","/purchase/list.json", "/purchase/list",
+					"/purchase/total", "/purchase/read", "/purchase/update"})
 public class PurchaseController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     PurchaseDAO dao=new PurchaseDAO();   
@@ -36,6 +37,18 @@ public class PurchaseController extends HttpServlet {
 			break;
 		case "/purchase/list":
 			request.setAttribute("pageName", "/purchase/list.jsp");
+			dis.forward(request, response);
+			break;
+		case "/purchase/total": //실행: /purchase/total?key=pid&query=
+			key=request.getParameter("key");
+			query=request.getParameter("query");
+			out.println(dao.total(key, query));
+			break;
+		case "/purchase/read":
+			String pid=request.getParameter("pid");
+			request.setAttribute("vo", dao.read(pid));
+			request.setAttribute("array", dao.list(pid));
+			request.setAttribute("pageName", "/purchase/read.jsp");
 			dis.forward(request, response);
 			break;
 		}
@@ -68,7 +81,17 @@ public class PurchaseController extends HttpServlet {
 			//System.out.println(ovo.toString());
 			dao.insert(ovo); //주문상품저장
 			break;
+		case "/purchase/update":
+			pid=request.getParameter("pid");
+			int status=Integer.parseInt(request.getParameter("status"));
+			dao.update(pid, status);
+			break;
 		}
 	}
-
 }
+
+
+
+
+
+

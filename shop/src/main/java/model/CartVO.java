@@ -1,6 +1,6 @@
 package model;
 
-public class CartVO extends GoodsVO {
+public class CartVO extends GoodsVO{
 	private int qnt;
 
 	public int getQnt() {
@@ -16,6 +16,5 @@ public class CartVO extends GoodsVO {
 		return "CartVO [qnt=" + qnt + ", getGid()=" + getGid() + ", getTitle()=" + getTitle() + ", getPrice()="
 				+ getPrice() + ", getImage()=" + getImage() + "]";
 	}
-
 	
 }

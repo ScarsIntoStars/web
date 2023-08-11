@@ -1,5 +1,4 @@
 package model;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -8,13 +7,10 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class NaverAPI {
-
 	 public static String search(int page, String query) {
 	        String clientId = "DSISkunI4gxjpwj6Yl6J"; //애플리케이션 클라이언트 아이디
 	        String clientSecret = "CxLnF9_VmQ"; //애플리케이션 클라이언트 시크릿
-
 
 	        String text = null;
 	        try {
@@ -23,20 +19,19 @@ public class NaverAPI {
 	            throw new RuntimeException("검색어 인코딩 실패",e);
 	        }
 
-
 	        int start=(page-1)*5+1;
-	        String apiURL = "https://openapi.naver.com/v1/search/shop.json?query=" + text;    // JSON 결과
+	        String apiURL = "https://openapi.naver.com/v1/search/shop.json?query=" + text; 
 	        apiURL +="&display=5&start=" + start;
+	        
+	        // JSON 결과
 	        //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // XML 결과
-
 
 	        Map<String, String> requestHeaders = new HashMap<>();
 	        requestHeaders.put("X-Naver-Client-Id", clientId);
 	        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 	        String responseBody = get(apiURL,requestHeaders);
 
-	        
-	        System.out.println(responseBody);
+	        //System.out.println(responseBody);
 	        return responseBody;
 	    }
 

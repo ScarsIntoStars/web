@@ -1,7 +1,6 @@
 package model;
 
 public class PurchaseVO extends UserVO{
-
 	private String pid;
 	private int purSum;
 	private int status;
