@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-
+<style>
+	.content{
+		cursor:pointer;
+	}
+</style>
 <div class="row my-5">
 	<div class="col">
-		<h3 class="text-center">고객리뷰</h3>
+		<h3 class="text-center mb-5">고객리뷰</h3>
 		<c:if test="${user==null}">
 			<div class="text-center">
 				<button class="btn btn-primary w-50" id="btn-review">리뷰작성</button>
@@ -16,14 +18,13 @@
 				<textarea name="content" rows="3" class="form-control" placeholder="리뷰내용을 입력하세요!"></textarea>
 				<div class="text-center mt-2">
 					<button class="btn btn-primary px-5">글쓰기</button>
-				</div>
+				</div>	
 			</form>
-		</c:if>
+		</c:if>	
 		<div id="div_review" class="my-5"></div>
 	</div>
 </div>
-
-<!--리뷰목록템플릿 -->
+<!-- 리뷰목록 템플릿 -->
 <script id="temp_review" type="x-handlebars-template">
 	{{#each .}}
 		<div class="row">
@@ -33,56 +34,119 @@
 			</div>
 			<div class="col">
 				<div>{{revDate}}</div>
-				<div>{{content}}</div>
+				<div class="div-display{{rid}}" rid="{{rid}}">
+					<div class="ellipsis content">{{content}}</div>
+					<div class="text-end mt-2" style="{{show uid}}">
+						<button class="btn btn-primary btn-sm btn-update">수정</button>
+						<button class="btn btn-danger btn-sm btn-delete">삭제</button>
+					</div>
+				</div>
+				<div class="div-update{{rid}}" rid="{{rid}}" style="display:none;">
+					<textarea class="form-control content" rows="3">{{content}}</textarea>
+					<div class="text-end mt-2">
+						<button class="btn btn-primary btn-sm btn-save">저장</button>
+						<button class="btn btn-secondary btn-sm btn-cancel">취소</button>
+					</div>
+				</div>
 			</div>
-		</div>
+		<div>
 		<hr>
 	{{/each}}
 </script>
 <script>
-
+	Handlebars.registerHelper("show", function(writer){
+		if(writer!=uid) return "display:none";
+	});
+</script>
+<script>
 	const uid="${user.uid}";
 	const gid="${vo.gid}";
-	$("#btn-review").on("click", function(){
-		location.href="/user/login?target=/goods/read?gid="+gid
-	})
+	
+	//저장버튼을 클릭한경우
+	$("#div_review").on("click", ".btn-save", function(){
+		const row=$(this).parent().parent();
+		const rid=row.attr("rid");
+		const content=row.find(".content").val();
+		if(confirm(rid + "번 리뷰를 수정하실래요?")){
+			//리뷰수정
+			$.ajax({
+				type:"post",
+				url:"/review/update",
+				data:{rid, content},
+				success:function(){
+					getList();
+				}
+			});
+		}
+	});
+	
+	//리뷰 수정버튼이나 취소버튼을 클릭한 경우
+	$("#div_review").on("click", ".btn-update, .btn-cancel", function(){
+		const rid=$(this).parent().parent().attr("rid");
+		$("#div_review .div-display" + rid).toggle();
+		$("#div_review .div-update" + rid).toggle();
+	});
+	
+	//리뷰 삭제버튼을 클릭한 경우
+	$("#div_review").on("click", ".btn-delete", function(){
+		const rid=$(this).parent().parent().attr("rid");
+		if(confirm(rid + "번 리뷰를 삭제하실래요?")){
+			//리뷰삭제
+			$.ajax({
+				type:"post",
+				url:"/review/delete",
+				data:{rid},
+				success:function(){
+					getList();
+				}
+			});
+		}
+	});
+	
+	//content를 클릭한 경우
+	$("#div_review").on("click", ".content", function(){
+		$(this).toggleClass("ellipsis");
+	});
 	
 	getList();
-	function getList() {
+	function getList(){
 		$.ajax({
 			type:"get",
 			url:"/review/list.json",
 			data:{gid},
-			type:"json",
+			dataType:"json",
 			success:function(data){
+				//console.log(data);
 				const temp=Handlebars.compile($("#temp_review").html());
 				$("#div_review").html(temp(data));
 			}
-		})
+		});	
 	}
 	
+	$("#btn-review").on("click", function(){
+		location.href="/user/login?target=/goods/read?gid=" + gid;	
+	});
 	
 	$(frm).on("submit", function(e){
 		e.preventDefault();
 		const content=$(frm.content).val();
-		if(content=="") {
-			alert("리뷰내용을 입력하세요!");
+		if(content==""){
+			alert("리뷰 내용을 입력하세요!");
 			$(frm.content).focus();
-		} else {
+		}else{
 			$.ajax({
 				type:"post",
 				url:"/review/insert",
 				data:{gid, uid, content},
 				success:function(){
-					alert("리뷰가 저장되었습니다")
+					alert("리뷰가 저장되었습니다.");
 					$(frm.content).val("");
 					getList();
 				}
-			})
+			});
 		}
-	})
+	});
 </script>
-
 
 
 

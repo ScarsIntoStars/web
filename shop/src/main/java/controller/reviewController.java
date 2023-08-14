@@ -14,12 +14,11 @@ import com.google.gson.Gson;
 import model.ReviewDAO;
 import model.ReviewVO;
 
-
-@WebServlet(value={"/review/insert", "/review/list.json"})
-public class reviewController extends HttpServlet {
+@WebServlet(value= {"/review/insert", "/review/list.json", "/review/delete","/review/update"})
+public class ReviewController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ReviewDAO dao=new ReviewDAO();
-   
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out=response.getWriter();
@@ -28,8 +27,7 @@ public class reviewController extends HttpServlet {
 		case "/review/list.json":
 			Gson gson=new Gson();
 			out.println(gson.toJson(dao.list(request.getParameter("gid"))));
-			
-		break;
+			break;
 		}
 	}
 
@@ -40,9 +38,20 @@ public class reviewController extends HttpServlet {
 			vo.setGid(request.getParameter("gid"));
 			vo.setUid(request.getParameter("uid"));
 			vo.setContent(request.getParameter("content"));
+			System.out.println(vo.toString());
 			dao.insert(vo);
-		break;
+			break;
+		case "/review/delete":
+			int rid=Integer.parseInt(request.getParameter("rid"));
+			dao.delete(rid);
+			break;
+		case "/review/update":
+			rid=Integer.parseInt(request.getParameter("rid"));
+			String content=request.getParameter("content");
+			dao.update(rid, content);
+			break;
 		}
 	}
-
 }
+
+

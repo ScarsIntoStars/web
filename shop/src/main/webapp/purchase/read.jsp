@@ -27,7 +27,7 @@
 		<table class="table">
 			<c:forEach items="${array}" var="gvo">
 				<tr>
-					<td><a href="goods/read?gid=${gvo.gid}">${gvo.gid}</a></td>
+					<td><a href="/goods/read?gid=${gvo.gid}">${gvo.gid}</a></td>
 					<td><img src="${gvo.image}" width="50px"></td>
 					<td>${gvo.title}</td>
 					<td><fmt:formatNumber value="${gvo.price}" pattern="#,###원"/></td>
@@ -38,7 +38,6 @@
 		</table>
 	</div>
 </div>
-
 
 
 

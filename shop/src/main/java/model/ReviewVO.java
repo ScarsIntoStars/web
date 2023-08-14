@@ -1,6 +1,6 @@
 package model;
 
-public class ReviewVO extends UserVO {
+public class ReviewVO extends UserVO{
 	private int rid;
 	private String gid;
 	private String revDate;
@@ -29,9 +29,11 @@ public class ReviewVO extends UserVO {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
 	@Override
 	public String toString() {
-		return "ReviewVO [rid=" + rid + ", gid=" + gid + ", revDate=" + revDate + ", content=" + content + ", getUid()="
+		return "ReivewVO [rid=" + rid + ", gid=" + gid + ", revDate=" + revDate + ", content=" + content + ", getUid()="
 				+ getUid() + ", getUname()=" + getUname() + ", getPhoto()=" + getPhoto() + "]";
 	}
+	
 }

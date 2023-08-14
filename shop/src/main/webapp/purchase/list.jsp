@@ -68,6 +68,7 @@
 	$("#sel-status").on("change", function(){
 		key="status";
 		query=$(this).val();
+		page=1;
 		getTotal();
 	});
 	
@@ -95,6 +96,7 @@
 		e.preventDefault();
 		query=$(frm.query).val();
 		key=$(frm.key).val();
+		page=1;
 		getTotal();
 	});
 	
@@ -123,7 +125,7 @@
 					$("#div_purchase").html("<h3 class='text-center my-5'>검색결과가 없습니다.</h3>");
 				}else{
 					const totalPages=Math.ceil(data/5);
-					$("#pagination").twbsPagination("changeTotalPages", totalPages, 1);
+					$("#pagination").twbsPagination("changeTotalPages", totalPages, page);
 				}
 				if(data > 5){
 					$("#pagination").show();

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="row">
 	<div class="col">
 		<img src="/image/header01.png" width="100%" id="img_header">
@@ -31,6 +31,9 @@
 						<c:if test="${user.role==2 || user==null}">
 							<li class="nav-item">
 								<a class="nav-link active" aria-current="page" href="/cart/list">장바구니</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link active" aria-current="page" href="/purchase/user">구매목록</a>
 							</li>
 						</c:if>
 					</ul>
